@@ -4,7 +4,7 @@
 
 reflect() -> record_info(fields, gravatar).
 
-render_element(Record) -> 
+render_element(Record) ->
     Image = #image {
         id=Record#gravatar.id,
         anchor=Record#gravatar.anchor,
@@ -12,10 +12,14 @@ render_element(Record) ->
     },
     element_image:render_element(Image).
 
+gravatar_icon(#gravatar{email=undefined, size=Size}) ->
+    wf:f("http://www.gravatar.com/avatar/?s=~s&d=mm&f=y" ,
+         [Size]);
+
 gravatar_icon(#gravatar{email=Email, size=Size, rating=Rating, default=Default}) ->
     GravatarId = digest2str(erlang:md5(wf:clean_lower(Email))),
-    wf:f("http://www.gravatar.com/avatar/~s?size=~s&r=~s&d=~s" ,
-        [GravatarId, Size, Rating, Default]).
+    wf:f("http://www.gravatar.com/avatar/~s?s=~s&r=~s&d=~s" ,
+         [GravatarId, Size, Rating, Default]).
 
 digest2str(Digest) ->
     [[nibble2hex(X bsr 4), nibble2hex(X band 15)] ||
