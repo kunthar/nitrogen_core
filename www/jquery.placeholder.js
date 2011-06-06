@@ -137,19 +137,18 @@ Thanks to...
     
     function itemOut() {
 	var that = this;
-	
 	//use timeout to let other validators/formatters directly bound to blur/focusout work first
 	setTimeout(function(){
 	    var input = $(that);
 	    var br = parseInt(input.css('border-left-width'));
-	    var m = parseInt(input.css('marginLeft'));
-	    var mt = parseInt(input.css('marginTop'));
-	    var h = parseInt(input.css('height'));
-	    //console.log(br, m, mt, h, $(input.data(phl)).css('line-height'));
 	    $(input.data(phl)) // more like black magic
-		.css('top', (input.position().top+mt-2) + 'px')
-		.css('left', (input.position().left+br+m+1) + 'px')
-		.css('display', !!input.val() ? 'none' : 'block');
+		.css('display', !!input.val() ? 'none' : 'block')
+		.position({
+		    my: "left center",
+		    at: "left center",
+		    offset: (br+1)+" 0",
+		    of: $(input)
+		});
 	});
     };
 }(jQuery));
